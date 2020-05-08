@@ -1,0 +1,43 @@
+    {% if app.user != null and tasks|length > 0 %}
+    <!-- valido que esté logueado y haya tareas -->
+    <table>
+        <tr>
+            <th>Tarea</th>
+            <th>Prioridad</th>
+            <th>Horas presupuestadas</th>
+            <th>Aciones</th>
+        </tr>
+
+<!-- SE LISTAN LAS TAREAS -->
+        {% for task in tasks %}
+            <tr>
+                <td>{{ task.title }}</td>
+                <td>    <!-- PRIORIDAD -->
+                    {% if task.priority == 'high' %}
+                        {{ 'Alta' }}
+                    {% endif %}
+                    {% if task.priority == 'medium' %}
+                        {{ 'Media' }}
+                    {% endif %}
+                    {% if task.priority == 'low' %}
+                        {{ 'Baja' }}
+                    {% endif %}
+                </td>
+                <td>{{ task.hours }}</td>
+                <td class="buttons">
+                    <a href="{{ path('task_detail', {'id':task.id}) }}" class="btn-show">Ver</a>
+                    
+
+                    {% if app.user != null and task.user.id == app.user.id %}
+                        <a href="{{ path('task_edit', {'id':task.id}) }}" class="btn-edit">Editar</a>
+                        <a href="{{ path('task_delete', {'id':task.id}) }}" class="btn-delete">Borrar</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    {% else %}
+
+    <strong>No hay tareas</strong>
+    {% endif %}
